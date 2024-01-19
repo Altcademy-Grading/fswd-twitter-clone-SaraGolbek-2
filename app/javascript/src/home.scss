@@ -1,0 +1,46 @@
+body {
+  background-image: url(homebg.jpg);
+  background-color: rgba(255, 255, 255, 0.486);
+  color: gray;
+}
+
+
+#sign-in, #creat-acc {
+  background-color: #ffffffa4;
+  padding: 15px;
+  padding-top: 20px;
+}
+
+
+input {
+  border: 1px solid #afafaf;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  padding-left: 5px;
+}
+
+
+::placeholder {
+  color: rgb(198, 197, 197);
+  padding-left: 5px;
+}
+
+
+.inputwidth {
+ width: 100%;
+}
+
+
+#passinput {
+  width: 65%;
+  margin-right: 5%;
+ }
+
+
+button {
+  background-color: pink;
+  border:rgb(198, 197, 197);
+  border-radius: 5px;
+  width: 30%;
+  color: gray;
+}
