@@ -1,1 +1,1 @@
-import 'src/profile';
+import '@src/profile';
