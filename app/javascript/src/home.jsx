@@ -4,9 +4,6 @@ import Layout from './layout';
 import './home.scss';
 import { safeCredentials, handleErrors, loginUser } from './utils/fetchHelper';
 
-// Import the loginUser function
-// import { loginUser } from './path-to-loginUser'; // Replace with the correct path
-
 const Home = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -24,7 +21,6 @@ const Home = () => {
     event.preventDefault();
 
     try {
-      // Call the loginUser function to handle the authentication
       await loginUser(username, password);
       window.location.replace("/feed");
     } catch (error) {
