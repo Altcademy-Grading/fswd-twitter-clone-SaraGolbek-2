@@ -4,6 +4,41 @@ import Layout from './layout';
 import './app.scss';
 import Posts from './utils/posts';
 
+export const indexTweets = async (successCB, errorCB) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}?api_key=${API_KEY}`);
+    const data = await response.json();
+    successCB(data);
+  } catch (error) {
+    errorCB(error);
+  }
+};
+
+export const postTweet = async (content, successCB, errorCB) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}?api_key=${API_KEY}`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ tweet: { content } }),
+    });
+    const data = await response.json();
+    successCB(data);
+  } catch (error) {
+    errorCB(error);
+  }
+};
+
+export const destroyTweet = async (id, successCB, errorCB) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/${id}/?api_key=${API_KEY}`, {
+      method: 'DELETE',
+      headers,
+    });
+    successCB(response);
+  } catch (error) {
+    errorCB(error);
+  }
+};
 
 const Feed = () => {
   return (
