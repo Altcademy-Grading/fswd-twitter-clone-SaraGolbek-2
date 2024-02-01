@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Layout from './layout';
 import './app.scss';
+import TweetList from './utils/tweetList';
 
 const Profile = () => (
   <Layout>
@@ -21,7 +22,9 @@ const Profile = () => (
           <h4 class="m-3">Create</h4>
           <form class="ms-3"><input type="text" class="inputwidth" placeholder="What is on your mind?"></input><button class="btn">Post</button></form>
         </div>
-        <div class="feed"></div>
+        <div class="feed">
+          <TweetList />
+        </div>
       </div>
     </div>
   </Layout>
