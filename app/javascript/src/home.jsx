@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import Layout from './layout';
 import './home.scss';
-import { safeCredentials, handleErrors } from './utils/fetchHelper';
+import { safeCredentials, handleErrors, loginUser } from './utils/fetchHelper';
+
+// Import the loginUser function
+// import { loginUser } from './path-to-loginUser'; // Replace with the correct path
 
 const Home = () => {
   const [username, setUsername] = useState('');
@@ -17,14 +20,15 @@ const Home = () => {
     setPassword(event.target.value);
   };
 
-  const handleLogIn = (event) => {
+  const handleLogIn = async (event) => {
     event.preventDefault();
-    const isAuthenticated = true;
 
-    if (isAuthenticated) {
+    try {
+      // Call the loginUser function to handle the authentication
+      await loginUser(username, password);
       window.location.replace("/feed");
-    } else {
-      console.log('Login failed');
+    } catch (error) {
+      console.error('Login failed:', error.message);
     }
   };
 
