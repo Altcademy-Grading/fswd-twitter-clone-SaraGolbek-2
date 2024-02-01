@@ -6,7 +6,7 @@ import Posts from './utils/posts';
 
 export const indexTweets = async (successCB, errorCB) => {
   try {
-    const response = await fetch(`${API_BASE_URL}?api_key=${API_KEY}`);
+    const response = await fetch(`/api/tweets`);
     const data = await response.json();
     successCB(data);
   } catch (error) {
@@ -16,7 +16,7 @@ export const indexTweets = async (successCB, errorCB) => {
 
 export const postTweet = async (content, successCB, errorCB) => {
   try {
-    const response = await fetch(`${API_BASE_URL}?api_key=${API_KEY}`, {
+    const response = await fetch(`/api/tweets`, {
       method: 'POST',
       headers,
       body: JSON.stringify({ tweet: { content } }),
@@ -30,7 +30,7 @@ export const postTweet = async (content, successCB, errorCB) => {
 
 export const destroyTweet = async (id, successCB, errorCB) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/${id}/?api_key=${API_KEY}`, {
+    const response = await fetch(`/api/tweets`, {
       method: 'DELETE',
       headers,
     });
