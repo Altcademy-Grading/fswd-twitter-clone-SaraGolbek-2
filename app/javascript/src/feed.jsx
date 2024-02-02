@@ -58,14 +58,6 @@ const Feed = () => {
           <h4 class="m-3">Create</h4>
           <form class="ms-3"><input type="text" class="inputwidth" placeholder="What is on your mind?"></input><button class="btn btn-secondary">Post</button></form>
         </div>
-        {(() => {
-              if (error) {
-                return error;
-              }
-              return tweets.map((tweet) => {
-                return <Posts />;
-              })
-            })()}
       </div>
     </div>
   </Layout>
