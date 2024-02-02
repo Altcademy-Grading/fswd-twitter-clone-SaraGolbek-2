@@ -1,43 +1,46 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import Layout from './layout';
-import './home.scss';
-import { safeCredentials, handleErrors, loginUser } from './utils/fetchHelper';
+import './stylesheets/home';
+import { safeCredentials, handleErrors} from './utils/fetchHelper';
 
 const Home = () => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [newusername, setUsername] = useState('');
+  const [newemail, setEmail] = useState('');
+  const [newpassword, setPassword] = useState('');
+  const [username, userLogIn] = useState('');
+  const [password, passwordLogIn] = useState('');
 
-  const userLogIn = (event) => {
-    setUsername(event.target.value);
-  };
-
-  const passwordLogIn = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleLogIn = async (event) => {
+  const handleLogIn = (event) => {
     event.preventDefault();
 
-    try {
-      await loginUser(username, password);
-      window.location.replace("/feed");
-    } catch (error) {
-      console.error('Login failed:', error.message);
-    }
-  };
+    fetch('/api/sessions', safeCredentials ({
+      method: 'POST',
+      body: JSON.stringify({
+        user: {
+          username: username,
+          password: password,
+        }
+      })
+    }))
+      .then(handleErrors)
+      .then(data => {
+        console.log(data);
+        window.location.replace("/feed");
+      })
 
-  const handleFormSubmit = (event) => {
+  }
+
+  const handleSignUp = (event) => {
     event.preventDefault();
 
     fetch('/api/users', safeCredentials({
       method: 'POST',
       body: JSON.stringify({
         user: {
-          username: username,
-          email: email,
-          password: password,
+          username: newusername,
+          email: newemail,
+          password: newpassword,
         }
       })
     }))
@@ -57,7 +60,7 @@ const Home = () => {
         </div>
         <div className="col-4 mt-5">
           <div className="row border shadow rounded" id="acc">
-            <form id="log-in" onSubmit={handleLogIn}>
+            <form className="log-in" onSubmit={handleLogIn}>
               <h6 className="mb-3">Welcome Back!</h6>
               <input type="text"  className="inputwidth username" id="usernameinput" placeholder="Username" required onChange={(event) => userLogIn(event.target.value)}></input>
               <input type="password" className="password" id="passinput" placeholder="Password" required onChange={(event) => passwordLogIn(event.target.value)}></input>
@@ -68,7 +71,7 @@ const Home = () => {
             </form>
           </div>
           <div className="row border shadow rounded mt-3" id="acc">
-            <form className="sign-up" onSubmit={handleFormSubmit}>
+            <form className="sign-up" onSubmit={handleSignUp}>
               <h6 className="mb-3">New to Twitter?</h6>
               <input type="text" className="inputwidth email" id="newemail" placeholder="Email" required onChange={(event) => setEmail(event.target.value)}></input>
               <input type="text" className="inputwidth username" id="newusername" placeholder="Username" required onChange={(event) => setUsername(event.target.value)}></input>

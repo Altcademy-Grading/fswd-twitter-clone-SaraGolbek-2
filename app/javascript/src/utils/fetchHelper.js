@@ -38,34 +38,3 @@ export function handleErrors(response) {
   return response.json();
 }
 
-
-export async function loginUser(username, password) {
-
-  try {
-    const requestBody = JSON.stringify({
-      username: username,
-      password: password,
-    });
-
-    const headers = authenticityHeader(jsonHeader());
-
-    const requestOptions = safeCredentials({
-      method: 'POST',
-      headers: headers,
-      body: requestBody,
-    });
-
-    const response = await fetch(loginEndpoint, requestOptions);
-    const data = await response.json();
-
-    if (response.ok) {
-      console.log('Login successful:', data);
-    } else {
-      console.error('Login failed:', data.error || 'Unknown error');
-      throw new Error('Authentication failed');
-    }
-  } catch (error) {
-    console.error('Login error:', error.message);
-    throw error;
-  }
-}

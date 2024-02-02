@@ -1,46 +1,45 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDOM from 'react-dom'
 import Layout from './layout';
-import './app.scss';
-import Posts from './utils/posts';
-
-export const indexTweets = async (successCB, errorCB) => {
-  try {
-    const response = await fetch(`/api/tweets`);
-    const data = await response.json();
-    successCB(data);
-  } catch (error) {
-    errorCB(error);
-  }
-};
-
-export const postTweet = async (content, successCB, errorCB) => {
-  try {
-    const response = await fetch(`/api/tweets`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({ tweet: { content } }),
-    });
-    const data = await response.json();
-    successCB(data);
-  } catch (error) {
-    errorCB(error);
-  }
-};
-
-export const destroyTweet = async (id, successCB, errorCB) => {
-  try {
-    const response = await fetch(`/api/tweets`, {
-      method: 'DELETE',
-      headers,
-    });
-    successCB(response);
-  } catch (error) {
-    errorCB(error);
-  }
-};
+import './stylesheets/app.scss';
+import {safeCredentials, handleErrors} from './utils/fetchHelper';
 
 const Feed = () => {
+  const [message, getMessage] = useState('');
+  const [tweets, setTweets] = useState([]);
+
+  const refreshFeed = () => {
+    fetch('/api/tweets', safeCredentials({
+      method: 'GET',
+    }))
+      .then(handleErrors)
+      .then(data => {
+        setTweets(data); 
+      })
+  };
+
+  useEffect(() => {
+    refreshFeed();
+  }, []); 
+
+  const handleTweet = (event) => {
+    event.preventDefault();
+
+    fetch('/api/tweets', safeCredentials ({
+      method: 'POST',
+      body: JSON.stringify({
+        tweet: {
+          message: message, 
+        }
+      })
+    }))
+      .then(handleErrors)
+      .then(data => {
+        console.log(data);
+        refreshFeed()
+      })
+  };
+
   return (
    <Layout>
     <div class="row">
@@ -56,8 +55,16 @@ const Feed = () => {
       <div class="col-8 mt-5">
         <div class="border rounded shadow-sm pb-3 mb-3 w-100">
           <h4 class="m-3">Create</h4>
-          <form class="ms-3"><input type="text" class="inputwidth" placeholder="What is on your mind?"></input><button class="btn btn-secondary">Post</button></form>
+          <form class="ms-3" onSubmit={handleTweet}><input type="text" class="inputwidth" placeholder="What is on your mind?" required onChange={(event) => getMessage(event.target.value)}></input><button class="btn btn-secondary">Post</button></form>
         </div>
+        <ul>
+        {tweets.map(tweets => (
+          <li key={tweets.id}>
+            <p>User: {tweets.user_id}</p>
+            <p>Message: {tweets.message}</p>
+          </li>
+        ))}
+      </ul>
       </div>
     </div>
   </Layout>
